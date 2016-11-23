@@ -1,0 +1,76 @@
+  class vtislemleri
+    {
+       
+        public int numara;
+        public string ad;
+        public string soyad;
+        public string okul;
+        OleDbConnection connx;
+        OleDbCommand cmd;
+        public  vtislemleri() {
+
+            connx = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0; Data Source=vtcl.accdb");
+            
+        
+        }public void ekle() {
+
+            connx.Open();
+            cmd = new OleDbCommand("Insert Into ogr values(@numara, @ad, @soyad, @okul)", connx);
+            cmd.Parameters.AddWithValue("@numara", numara);
+            cmd.Parameters.AddWithValue("@ad", ad);
+            cmd.Parameters.AddWithValue("@soyad",soyad);
+            cmd.Parameters.AddWithValue("@okul", okul);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("kayit basariyla eklendi");
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Kayit işlemini class tarafından gerçekleştiremedik. " + e.ToString());
+
+            }
+            connx.Close();
+        }
+        public void guncelle() {
+
+            connx.Open();
+            cmd = new OleDbCommand("UPDATE ogr SET numara=@numara, ad=@ad , soyad=@soyad, okul=@okul WHERE numara=@numara", connx);           
+            cmd.Parameters.AddWithValue("@numara", numara);
+            cmd.Parameters.AddWithValue("@ad", ad);
+            cmd.Parameters.AddWithValue("@soyad", soyad);
+            cmd.Parameters.AddWithValue("@okul", okul);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("guncelleme işlemi başarılı");
+            }
+            catch (Exception e)
+            {
+
+                MessageBox.Show("Güncelleme  işlemini class tarafından gerçekleştiremedik. " + e.ToString());
+            }
+            connx.Close();
+        
+        }
+        public void sil() {
+            connx.Open();
+            cmd = new OleDbCommand("Delete * from ogr where numara=@numara", connx);
+            cmd.Parameters.AddWithValue("@numara", numara);
+            try
+            {
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("silme işlemi başarılı");
+
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Silme  işlemini class tarafından gerçekleştiremedik. " + e.ToString());
+
+            }
+            connx.Close();
+        
+        }
+            }
+}
